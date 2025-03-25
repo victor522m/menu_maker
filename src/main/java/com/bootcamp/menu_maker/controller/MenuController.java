@@ -40,7 +40,7 @@ public class MenuController {
                     .orElseThrow(() -> new RuntimeException("Menú no encontrado"));
 
             // Definir la ruta del archivo PDF generado
-            String destino = System.getProperty("java.io.tmpdir") + File.separator + "menu_" + id + ".pdf";
+            String destino = System.getProperty("java.io.tmpdir") + File.separator + "menu_" + menu.getNombre() + ".pdf";
 
             // Generar el PDF
             pdfBoxGeneratorService.generateMenuPdf(menu, destino, porcentajeIva);
