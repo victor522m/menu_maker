@@ -56,4 +56,5 @@ public class PlatoBase {
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
     public List<Menu> getMenus() { return menus; }
     public void setMenus(List<Menu> menus) { this.menus = menus; }
+    public  String getTipoPlato(){ return "No especificado";}
 }

@@ -19,5 +19,9 @@ public class Primeros extends PlatoBase {
     public void setEsVegetariano(boolean esVegetariano) { this.esVegetariano = esVegetariano; }
     public int getTiempoPreparacion() { return tiempoPreparacion; }
     public void setTiempoPreparacion(int tiempoPreparacion) { this.tiempoPreparacion = tiempoPreparacion; }
+    @Override
+    public String getTipoPlato() {
+        return "PRIMERO";
+    }
 }
 

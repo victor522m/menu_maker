@@ -18,5 +18,9 @@ public class Postre extends PlatoBase {
     public void setTipoPostre(String tipoPostre) { this.tipoPostre = tipoPostre; }
     public boolean isAptoCeliaco() { return aptoCeliaco; }
     public void setAptoCeliaco(boolean aptoCeliaco) { this.aptoCeliaco = aptoCeliaco; }
+    @Override
+    public String getTipoPlato() {
+        return "POSTRE";
+    }
 }
 

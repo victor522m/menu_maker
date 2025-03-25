@@ -18,4 +18,8 @@ public class Segundos extends PlatoBase {
     public void setTipoCarne(String tipoCarne) { this.tipoCarne = tipoCarne; }
     public String getGuarnicion() { return guarnicion; }
     public void setGuarnicion(String guarnicion) { this.guarnicion = guarnicion; }
+    @Override
+    public String getTipoPlato() {
+        return "PRIMERO";
+    }
 }
