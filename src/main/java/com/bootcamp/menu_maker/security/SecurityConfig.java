@@ -41,10 +41,10 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.GET, "/api/menus").hasAnyRole("OWNER", "USER")
         
         // Permitir acceso a obtener un menú específico solo para OWNER
-        .requestMatchers(HttpMethod.GET, "/api/menus/{id}").hasRole("OWNER")
+        .requestMatchers(HttpMethod.GET, "/api/menus/{id}").hasAnyRole("OWNER")
         
         // Permitir acceso al endpoint para generar PDF del menú solo para OWNER
-        .requestMatchers(HttpMethod.GET, "/api/menus/pdf/{id}/{porcentajeIva}").hasRole("OWNER")
+        .requestMatchers(HttpMethod.GET, "/api/menus/pdf/{id}/{porcentajeIva}").hasAnyRole("OWNER")
         
         // Permitir creación de menús solo para OWNER
         .requestMatchers(HttpMethod.POST, "/api/menus").hasRole("OWNER")
@@ -78,8 +78,8 @@ public class SecurityConfig {
 
         );
 
-        http.httpBasic(Customizer.withDefaults());
-        http.csrf(csrf -> csrf.disable());
+        //http.httpBasic(Customizer.withDefaults());
+        //http.csrf(csrf -> csrf.disable());
 
         return http.build();
     }

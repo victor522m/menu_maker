@@ -1,25 +1,15 @@
 package com.bootcamp.menu_maker.entity;
 
-
-
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "plato")
-/* 
-@JsonIdentityInfo utiliza un identificador único (id) para serializar y deserializar objetos. Esto evita la recursividad infinita al referenciar objetos relacionados en ambas direcciones.
-
-Al serializar un Menu, los platos (PlatoBase) incluirán únicamente un identificador del menú sin repetir toda la estructura del objeto.
-
-*/
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -28,8 +18,7 @@ Al serializar un Menu, los platos (PlatoBase) incluirán únicamente un identifi
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Postre.class, name = "POSTRE"),
     @JsonSubTypes.Type(value = Primeros.class, name = "PRIMEROS"),
-    @JsonSubTypes.Type(value = Segundos.class, name = "SEGUNDOS"),
-    
+    @JsonSubTypes.Type(value = Segundos.class, name = "SEGUNDOS")
 })
 public class PlatoBase {
 
@@ -41,8 +30,9 @@ public class PlatoBase {
     private Double precio;
     private String descripcion;
 
+    // Relación bidireccional con Menu
     @ManyToMany(mappedBy = "platos")
-    @JsonBackReference
+    @JsonBackReference // Esto previene la serialización circular
     private List<Menu> menus = new ArrayList<>();
 
     // Getters y setters
@@ -56,5 +46,7 @@ public class PlatoBase {
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
     public List<Menu> getMenus() { return menus; }
     public void setMenus(List<Menu> menus) { this.menus = menus; }
-    public  String getTipoPlato(){ return "No especificado";}
+
+    // Puedes definir un comportamiento diferente según el tipo de plato si es necesario.
+    public String getTipoPlato() { return "No especificado"; }
 }
