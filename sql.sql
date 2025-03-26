@@ -76,3 +76,35 @@ VALUES
 (3, 10), -- Filete de Res en Menu Gourmet
 (3, 11), -- Tiramisú en Menu Gourmet
 (3, 12); -- Cheesecake de Fresa en Menu Gourmet
+
+
+-- Parte para seguridad
+
+CREATE DATABASE IF NOT EXISTS menu_maker;
+USE menu_maker;
+
+CREATE TABLE users (
+    username VARCHAR(50) PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    enabled BOOLEAN NOT NULL
+);
+
+CREATE TABLE authorities (
+    username VARCHAR(50),
+    authority VARCHAR(50),
+    FOREIGN KEY (username) REFERENCES users(username)
+);
+
+INSERT INTO users (username, password, enabled) VALUES --el password es 123 con bcript
+('admin', '$2a$10$IryfT0gP/Pxub/7lkUOU0.iXcgmnZOlRU7dbFiMgKqjHaz/W820om', 1),
+('victor', '$2a$10$IryfT0gP/Pxub/7lkUOU0.iXcgmnZOlRU7dbFiMgKqjHaz/W820om', 1),
+('angel', '$2a$10$IryfT0gP/Pxub/7lkUOU0.iXcgmnZOlRU7dbFiMgKqjHaz/W820om', 1),
+('henry', '$2a$10$IryfT0gP/Pxub/7lkUOU0.iXcgmnZOlRU7dbFiMgKqjHaz/W820om', 1),
+('user', '$2a$10$IryfT0gP/Pxub/7lkUOU0.iXcgmnZOlRU7dbFiMgKqjHaz/W820om', 1);
+
+INSERT INTO authorities (username, authority) VALUES 
+('admin', 'ROLE_OWNER'),
+('victor', 'ROLE_OWNER'),
+('angel', 'ROLE_OWNER'),
+('henry', 'ROLE_OWNER'),
+('user', 'ROLE_EMPLOYED');
