@@ -1,0 +1,54 @@
+http://localhost:8080/api/menus
+Metodo POST crear menu
+
+{
+    "nombre": "Menu Festivo",
+    "platos": [
+        { "id": 1, "tipo_plato": "PRIMEROS" },
+        { "id": 2, "tipo_plato": "SEGUNDOS" },
+        { "id": 3, "tipo_plato": "POSTRE" }
+    ]
+}
+
+http://localhost:8080/api/menus/1
+Metodo Put updatear menu  
+
+{
+    "nombre": "Nuevo  Menú del Día",
+    "platos": [
+        { "id": 1, "tipo_plato": "POSTRE" },
+        { "id": 6, "tipo_plato": "SEGUNDOS" },
+        { "id": 7, "tipo_plato": "POSTRE" }
+    ]
+}
+http://localhost:8080/api/menus/1/platos
+Metodo POST añade platos a un menu
+
+[8,12]
+
+http://localhost:8080/api/platos
+Metodo POST crea un platos
+
+{
+    "tipo_plato": "PRIMEROS",
+    "nombre": "Ravioles de Espinaca con Salsa de Almendras",
+    "precio": 7.5,
+    "descripcion": "Deliciosos ravioles rellenos de espinaca y queso ricotta, bañados en una delicada salsa de almendras con un toque de ajo",
+    "esVegetariano": true,
+    "tiempoPreparacion": 25
+}
+
+http://localhost:8080/api/platos/1
+Metodo PUT updatea un plato
+
+{
+    "tipo_plato": "PRIMEROS",
+    "nombre": "Sopa de Verduras y Pollo",
+    "precio": 6,
+    "descripcion": "Sopa ligera con verduras frescas",
+    "esVegetariano": false,
+    "tiempoPreparacion": 15,
+    "tipoPlato": "PRIMERO"
+}
+
+

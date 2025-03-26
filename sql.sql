@@ -1,4 +1,4 @@
--- DROP DATABASE menu_maker; (Descomentar si deseas limpiar la base de datos anterior)
+DROP DATABASE menu_maker; 
 CREATE DATABASE IF NOT EXISTS menu_maker;
 USE menu_maker;
 
@@ -31,8 +31,8 @@ CREATE TABLE IF NOT EXISTS menu_plato (
     menu_id BIGINT NOT NULL,
     plato_id BIGINT NOT NULL,
     PRIMARY KEY (menu_id, plato_id),
-    FOREIGN KEY (menu_id) REFERENCES menu(id),
-    FOREIGN KEY (plato_id) REFERENCES plato(id)
+    FOREIGN KEY (menu_id) REFERENCES menu(id) ON DELETE CASCADE,
+    FOREIGN KEY (plato_id) REFERENCES plato(id) ON DELETE CASCADE
 );
 
 -- Crear índices para optimización
@@ -95,12 +95,12 @@ CREATE TABLE authorities (
     FOREIGN KEY (username) REFERENCES users(username)
 );
 
-INSERT INTO users (username, password, enabled) VALUES --el password es 123 con bcript
-('admin', '$2a$10$IryfT0gP/Pxub/7lkUOU0.iXcgmnZOlRU7dbFiMgKqjHaz/W820om', 1),
-('victor', '$2a$10$IryfT0gP/Pxub/7lkUOU0.iXcgmnZOlRU7dbFiMgKqjHaz/W820om', 1),
-('angel', '$2a$10$IryfT0gP/Pxub/7lkUOU0.iXcgmnZOlRU7dbFiMgKqjHaz/W820om', 1),
-('henry', '$2a$10$IryfT0gP/Pxub/7lkUOU0.iXcgmnZOlRU7dbFiMgKqjHaz/W820om', 1),
-('user', '$2a$10$IryfT0gP/Pxub/7lkUOU0.iXcgmnZOlRU7dbFiMgKqjHaz/W820om', 1);
+INSERT INTO users (username, password, enabled) VALUES -- el password es 123  
+('admin', '{noop}123', 1),
+('victor', '{noop}123', 1),
+('angel', '{noop}123', 1),
+('henry', '{noop}123', 1),
+('user', '{noop}123', 1);
 
 INSERT INTO authorities (username, authority) VALUES 
 ('admin', 'ROLE_OWNER'),

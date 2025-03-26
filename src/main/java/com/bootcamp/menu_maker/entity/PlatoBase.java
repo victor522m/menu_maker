@@ -2,6 +2,7 @@ package com.bootcamp.menu_maker.entity;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -32,7 +33,8 @@ public class PlatoBase {
 
     // Relación bidireccional con Menu
     @ManyToMany(mappedBy = "platos")
-    @JsonBackReference // Esto previene la serialización circular
+    @JsonIgnore//evita la serialicacion???
+    //@JsonBackReference // Esto previene la serialización circular
     private List<Menu> menus = new ArrayList<>();
 
     // Getters y setters

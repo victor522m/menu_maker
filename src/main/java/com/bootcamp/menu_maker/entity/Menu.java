@@ -30,7 +30,7 @@ public class Menu {
         joinColumns = @JoinColumn(name = "menu_id"),
         inverseJoinColumns = @JoinColumn(name = "plato_id")
     )
-    @JsonManagedReference
+    //@JsonManagedReference
     private List<PlatoBase> platos = new ArrayList<>();
 
     private LocalDateTime fechaCreacion;

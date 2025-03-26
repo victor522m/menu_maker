@@ -78,7 +78,7 @@ public class MenuController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public Menu crearMenu(@RequestBody Menu menu) {
         return menuService.crearMenu(menu);

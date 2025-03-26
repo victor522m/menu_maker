@@ -20,6 +20,6 @@ public class Segundos extends PlatoBase {
     public void setGuarnicion(String guarnicion) { this.guarnicion = guarnicion; }
     @Override
     public String getTipoPlato() {
-        return "PRIMERO";
+        return "SEGUNDO";
     }
 }
