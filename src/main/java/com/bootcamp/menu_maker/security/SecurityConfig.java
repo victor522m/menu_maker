@@ -1,86 +1,125 @@
 package com.bootcamp.menu_maker.security;
 
+import java.util.Arrays;
 import javax.sql.DataSource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.config.Customizer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
-
-
+import javax.sql.DataSource;
+import java.util.Arrays;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
-    public UserDetailsManager userDetailsManager(DataSource dataSource) {
+    public JdbcUserDetailsManager userDetailsManager(DataSource dataSource) {
         return new JdbcUserDetailsManager(dataSource);
     }
-/*
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    } */
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        http.authorizeHttpRequests(configurer -> 
-        configurer
-        // Permitir acceso público a la raíz
-        .requestMatchers("/").permitAll()
-        // Permitir acceso a obtener todos los menús para OWNER y USER --- Funciona en postman
-        .requestMatchers(HttpMethod.GET, "/api/menus").hasAnyRole("OWNER", "USER")
-        
-        // Permitir acceso a obtener un menú específico solo para OWNER--- Funciona en postman
-        .requestMatchers(HttpMethod.GET, "/api/menus/{id}").hasAnyRole("OWNER")
-        
-        // Permitir acceso al endpoint para generar PDF del menú solo para OWNER--- Funciona en navegador
-        .requestMatchers(HttpMethod.GET, "/api/menus/pdf/{id}/{porcentajeIva}").hasAnyRole("OWNER")
-        
-        // Permitir creación de menús solo para OWNER --funciona en postman, ver json.txt
-        .requestMatchers(HttpMethod.POST, "/api/menus").hasRole("OWNER")
-        
-        // Permitir actualización de menús solo para OWNER --funciona en postman, ver json.txt
-        .requestMatchers(HttpMethod.PUT, "/api/menus/{id}").hasRole("OWNER")
-        
-        // Permitir eliminación de menús solo para OWNER--funciona en postman
-        .requestMatchers(HttpMethod.DELETE, "/api/menus/{id}").hasRole("OWNER")
-        
-        // Permitir acceso a los platos de un menú solo para OWNER y USER--- Funciona en postman
-        .requestMatchers(HttpMethod.GET, "/api/menus/{id}/platos").hasAnyRole("OWNER", "USER")
-        
-        // Permitir agregar platos a un menú solo para OWNER--Funciona en postman, ver json.txt
-        .requestMatchers(HttpMethod.POST, "/api/menus/{id}/platos").hasRole("OWNER")
-
-        // Obtener todos los platos: permitido para OWNER y USER--- Funciona en postman
-        .requestMatchers(HttpMethod.GET, "/api/platos").hasAnyRole("OWNER", "USER")
-
-        // Obtener un plato por ID: permitido para OWNER y USER --- Funciona en postman
-        .requestMatchers(HttpMethod.GET, "/api/platos/{id}").hasAnyRole("OWNER", "USER")
-
-        // Crear un plato: permitido solo para OWNER--Funciona en postman ver json.txt
-        .requestMatchers(HttpMethod.POST, "/api/platos").hasRole("OWNER")
-
-        // Actualizar un plato: permitido solo para OWNER--Funciona en postman ver json.txt
-        .requestMatchers(HttpMethod.PUT, "/api/platos/{id}").hasRole("OWNER")
-
-        // Eliminar un plato: permitido solo para OWNER--funciona en postman
-        .requestMatchers(HttpMethod.DELETE, "/api/platos/{id}").hasRole("OWNER")
-
-        );
-
-        http.httpBasic(Customizer.withDefaults());
-        http.csrf(csrf -> csrf.disable());
+        http
+                .logout(logout -> logout
+                        .logoutUrl("/api/logout") // Endpoint personalizado
+                        .logoutSuccessUrl("/login") // Redirección post-logout
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .addLogoutHandler((request, response, auth) -> {
+                            // Lógica adicional si es necesario
+                        }))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(basic -> basic
+                .authenticationEntryPoint((request, response, authException) -> {
+                    response.sendError(HttpStatus.UNAUTHORIZED.value(), "Acceso no autorizado");
+                })
+                )
+                .formLogin(form -> form.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/static/**",
+                                "/favicon.ico",
+                                "/manifest.json")
+                        .permitAll()
+                        // Rutas públicas
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // Rutas con acceso autenticado
+                        .requestMatchers(HttpMethod.GET, "/api/user-info").authenticated()
+                        // Configuración para menús
+                        .requestMatchers(HttpMethod.GET, "/api/menus").hasAnyRole("OWNER", "EMPLOYED")
+                        .requestMatchers(HttpMethod.GET, "/api/menus/{id}").hasAnyRole("OWNER")
+                        .requestMatchers(HttpMethod.GET, "/api/menus/pdf/{id}/{porcentajeIva}")
+                        .hasAnyRole("OWNER", "EMPLOYED")
+                        .requestMatchers(HttpMethod.POST, "/api/menus").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.PUT, "/api/menus/{id}", "/api/menus/**").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/menus/{id}", "/api/menus/**").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.GET, "/api/menus/{id}/platos").hasAnyRole("OWNER", "EMPLOYED")
+                        .requestMatchers(HttpMethod.POST, "/api/menus/{id}/platos").hasRole("OWNER")
+                        // Configuración para platos
+                        .requestMatchers(HttpMethod.GET, "/api/platos").hasAnyRole("OWNER", "EMPLOYED")
+                        .requestMatchers(HttpMethod.GET, "/api/platos/{id}").hasAnyRole("OWNER", "EMPLOYED")
+                        .requestMatchers(HttpMethod.POST, "/api/platos").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.PUT, "/api/platos/{id}", "/api/platos/**").hasRole("OWNER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/platos/{id}", "/api/platos/**").hasRole("OWNER")
+                        // Rutas adicionales
+                        .anyRequest().authenticated())
+                .httpBasic(basic -> basic.realmName("MenuMaker API"));
 
         return http.build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000",
+                "http://127.0.0.1:3000"));
+        configuration.setAllowedMethods(Arrays.asList(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"));
+        configuration.setExposedHeaders(Arrays.asList(
+                "Access-Control-Allow-Origin",
+                "Access-Control-Allow-Credentials"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
