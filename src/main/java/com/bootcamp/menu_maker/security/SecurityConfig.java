@@ -44,7 +44,7 @@ public class SecurityConfig {
         .requestMatchers(HttpMethod.GET, "/api/menus/{id}").hasAnyRole("OWNER")
         
         // Permitir acceso al endpoint para generar PDF del menú solo para OWNER--- Funciona en navegador
-        .requestMatchers(HttpMethod.GET, "/api/menus/pdf/{id}/{porcentajeIva}").hasAnyRole("OWNER")
+        .requestMatchers(HttpMethod.GET, "/api/menus/pdf/{id}/{porcentajeIva}").hasAnyRole("OWNER", "USER")
         
         // Permitir creación de menús solo para OWNER --funciona en postman, ver json.txt
         .requestMatchers(HttpMethod.POST, "/api/menus").hasRole("OWNER")
