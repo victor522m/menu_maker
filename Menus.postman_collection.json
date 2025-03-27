@@ -1,0 +1,331 @@
+{
+	"info": {
+		"_postman_id": "0decb736-d8b2-49e9-9ba6-a2cbff5b2da4",
+		"name": "Menus",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41788274"
+	},
+	"item": [
+		{
+			"name": "Listar Menus",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "angel",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://10.109.133.111:8080/api/menus",
+					"protocol": "http",
+					"host": [
+						"10",
+						"109",
+						"133",
+						"111"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"menus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar Menus por ID",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "angel",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://10.109.133.111:8080/api/menus/1",
+					"protocol": "http",
+					"host": [
+						"10",
+						"109",
+						"133",
+						"111"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"menus",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://10.109.133.111:8080/api/menus/",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "angel",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Menu Festivos\",\r\n  \"platos\": [\r\n    {\r\n      \"id\": 1\r\n    },\r\n    {\r\n      \"id\": 6\r\n    },\r\n    {\r\n      \"id\": 11\r\n    },\r\n    {\r\n      \"id\": 12\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://10.109.133.111:8080/api/menus/",
+					"protocol": "http",
+					"host": [
+						"10",
+						"109",
+						"133",
+						"111"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"menus",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar menu por id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "James",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/dogs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"dogs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver los platos de un menu concreto",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "henry",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/menus/1/platos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"menus",
+						"1",
+						"platos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ver los platos por id",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "henry",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/platos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"platos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear un menu",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "victor",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Menu Festivo\",\r\n    \"platos\": [\r\n        { \"id\": 1, \"tipo_plato\": \"PRIMEROS\" },\r\n        { \"id\": 2, \"tipo_plato\": \"SEGUNDOS\" },\r\n        { \"id\": 3, \"tipo_plato\": \"POSTRE\" }\r\n    ]\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/menus",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"menus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "victor",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/menus/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"menus",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
