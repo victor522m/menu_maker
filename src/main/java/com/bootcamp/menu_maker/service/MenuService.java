@@ -62,4 +62,22 @@ public class MenuService {
         
         return menuRepository.save(menu); // Guarda el menú actualizado
     }
+    public void removePlateFromMenu(Long menuId, Long plateId) {
+        // Buscar el menú por ID
+        Menu menu = menuRepository.findById(menuId)
+                .orElseThrow(() -> new RuntimeException("Menú no encontrado con ID: " + menuId));
+
+        // Buscar el plato por ID
+        PlatoBase plato = platoRepository.findById(plateId)
+                .orElseThrow(() -> new RuntimeException("Plato no encontrado con ID: " + plateId));
+
+        // Eliminar el plato del menú
+        menu.getPlatos().remove(plato);
+
+        // Guardar el menú actualizado
+        menuRepository.save(menu);
+    }
+    
+
+
 }

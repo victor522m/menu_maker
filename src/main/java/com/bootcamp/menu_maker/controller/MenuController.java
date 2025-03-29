@@ -30,6 +30,12 @@ public class MenuController {
         this.pdfBoxGeneratorService = pdfBoxGeneratorService;
     }
 
+    @DeleteMapping("{menuId}/platos/{plateId}")
+    public ResponseEntity<Void> removePlateFromMenu(@PathVariable Long menuId, @PathVariable Long plateId) {
+        menuService.removePlateFromMenu(menuId, plateId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("pdf/{id}/{porcentajeIva}")
     public ResponseEntity<Resource> generatePdf(
             @PathVariable Long id,
@@ -40,7 +46,8 @@ public class MenuController {
                     .orElseThrow(() -> new RuntimeException("Menú no encontrado"));
 
             // Definir la ruta del archivo PDF generado
-            String destino = System.getProperty("java.io.tmpdir") + File.separator + "menu_" + menu.getNombre() + ".pdf";
+            String destino = System.getProperty("java.io.tmpdir") + File.separator + "menu_" + menu.getNombre()
+                    + ".pdf";
 
             // Generar el PDF
             pdfBoxGeneratorService.generateMenuPdf(menu, destino, porcentajeIva);
@@ -72,10 +79,10 @@ public class MenuController {
         menus.forEach(menu -> {
             double precioTotal = menu.calcularTotalPrecios();
             double precioConIva = menu.calcularTotalConIva(10); // Ejemplo con 21% de IVA
-    
+
             // Agregar los valores calculados a la entidad
             menu.setPrecioTotal(precioTotal);
-            menu.setPrecioConIva((double)precioConIva);
+            menu.setPrecioConIva((double) precioConIva);
         });
         return menuService.obtenerTodosMenus();
     }
@@ -87,11 +94,11 @@ public class MenuController {
                     // Calcular precios directamente en la entidad antes de enviarla
                     double precioTotal = menu.calcularTotalPrecios();
                     double precioConIva = menu.calcularTotalConIva(21); // Por ejemplo, 21% de IVA
-    
+
                     // Agregar los valores calculados a la entidad
                     menu.setPrecioTotal(precioTotal);
                     menu.setPrecioConIva(precioConIva);
-    
+
                     return ResponseEntity.ok(menu);
                 })
                 .orElse(ResponseEntity.notFound().build());
