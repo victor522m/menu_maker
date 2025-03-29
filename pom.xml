@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version> <!-- Versión actualizada de Spring Boot -->
+        <version>3.2.5</version> <!-- Versión compatible con Java 17 -->
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     
@@ -19,7 +19,7 @@
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <java.version>23</java.version>
+        <java.version>17</java.version> <!-- Cambiado a Java 17 -->
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -74,9 +74,11 @@
             <artifactId>pdfbox</artifactId>
             <version>2.0.29</version>
         </dependency>
+
     </dependencies>
 
     <build>
+        <!-- Plugins -->
         <plugins>
             <!-- Spring Boot Maven Plugin -->
             <plugin>
@@ -88,14 +90,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version> <!-- Versión actualizada -->
+                <version>3.11.0</version> <!-- Compatible con Java 17 -->
                 <configuration>
-                    <release>${java.version}</release> <!-- Usa Java 23 -->
-                    <compilerArgs>
-                        <arg>-parameters</arg> <!-- Para mantener parámetros de método en tiempo de compilación -->
-                    </compilerArgs>
+                    <!-- Usa la versión de Java 17 -->
+                    <release>${java.version}</release>
                 </configuration>
             </plugin>
+
         </plugins>
+
     </build>
+
 </project>
