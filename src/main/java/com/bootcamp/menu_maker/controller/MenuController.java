@@ -68,13 +68,32 @@ public class MenuController {
 
     @GetMapping
     public List<Menu> obtenerTodosMenus() {
+        List<Menu> menus = menuService.obtenerTodosMenus();
+        menus.forEach(menu -> {
+            double precioTotal = menu.calcularTotalPrecios();
+            double precioConIva = menu.calcularTotalConIva(10); // Ejemplo con 21% de IVA
+    
+            // Agregar los valores calculados a la entidad
+            menu.setPrecioTotal(precioTotal);
+            menu.setPrecioConIva((double)precioConIva);
+        });
         return menuService.obtenerTodosMenus();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Menu> obtenerMenuPorId(@PathVariable Long id) {
         return menuService.obtenerMenuPorId(id)
-                .map(ResponseEntity::ok)
+                .map(menu -> {
+                    // Calcular precios directamente en la entidad antes de enviarla
+                    double precioTotal = menu.calcularTotalPrecios();
+                    double precioConIva = menu.calcularTotalConIva(21); // Por ejemplo, 21% de IVA
+    
+                    // Agregar los valores calculados a la entidad
+                    menu.setPrecioTotal(precioTotal);
+                    menu.setPrecioConIva(precioConIva);
+    
+                    return ResponseEntity.ok(menu);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 
