@@ -17,7 +17,7 @@ public class MenuMakerApplication {
 		//PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         //String encodedPassword = passwordEncoder.encode("123");
         //System.out.println("Encoded password: " + encodedPassword); // Ejemplo para el password "123"*/
-		System.out.println("hola");
+		System.out.println("hola mundo");
 		SpringApplication.run(MenuMakerApplication.class, args);
 	}
 
