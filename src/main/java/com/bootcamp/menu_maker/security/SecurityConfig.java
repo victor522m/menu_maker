@@ -32,7 +32,7 @@ public class SecurityConfig {
         http
                 .logout(logout -> logout
                         .logoutUrl("/api/logout") // Endpoint personalizado
-                        .logoutSuccessUrl("/login") // Redirección post-logout
+                        //.logoutSuccessUrl("/login") // Redirección post-logout
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .addLogoutHandler((request, response, auth) -> {
