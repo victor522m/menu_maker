@@ -15,8 +15,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
+import jakarta.servlet.http.HttpServletResponse;
+
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -30,22 +32,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                /*
+                 * .logout(logout -> logout
+                 * .logoutUrl("/api/logout") // Endpoint personalizado
+                 * //.logoutSuccessUrl("/login") // Redirección post-logout
+                 * .invalidateHttpSession(true)
+                 * .deleteCookies("JSESSIONID")
+                 * .addLogoutHandler((request, response, auth) -> {
+                 * // Lógica adicional si es necesario
+                 * }))
+                 */
                 .logout(logout -> logout
-                        .logoutUrl("/api/logout") // Endpoint personalizado
-                        //.logoutSuccessUrl("/login") // Redirección post-logout
+                        .logoutUrl("/api/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
-                        .addLogoutHandler((request, response, auth) -> {
-                            // Lógica adicional si es necesario
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204 No Content
                         }))
+
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(basic -> basic
-                .authenticationEntryPoint((request, response, authException) -> {
-                    response.sendError(HttpStatus.UNAUTHORIZED.value(), "Acceso no autorizado");
-                })
-                )
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendError(HttpStatus.UNAUTHORIZED.value(), "Acceso no autorizado");
+                        }))
                 .formLogin(form -> form.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
@@ -83,35 +94,33 @@ public class SecurityConfig {
     }
 
     @Bean
-CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(Arrays.asList(
-        "http://localhost:3000",             // Frontend en local
-        "http://127.0.0.1:3000", 
-        "https://victor522m.github.io",             // Frontend en producción
-        "https://menumaker-production-b6ac.up.railway.app" // Frontend en producción en caso de alojarlo en railway
-    ));
-    configuration.setAllowedMethods(Arrays.asList(
-        "GET", "POST", "PUT", "DELETE", "OPTIONS"
-    ));
-    configuration.setAllowedHeaders(Arrays.asList(
-        "Authorization",
-        "Content-Type",
-        "X-Requested-With",
-        "Accept",
-        "Origin",
-        "Access-Control-Request-Method",
-        "Access-Control-Request-Headers"
-    ));
-    configuration.setExposedHeaders(Arrays.asList(
-        "Access-Control-Allow-Origin",
-        "Access-Control-Allow-Credentials"
-    ));
-    configuration.setAllowCredentials(true);
-    configuration.setMaxAge(3600L);
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000", // Frontend en local
+                "http://127.0.0.1:3000",
+                "https://victor522m.github.io", // Frontend en producción
+                "https://menumaker-production-b6ac.up.railway.app" // Frontend en producción en caso de alojarlo en
+                                                                   // railway
+        ));
+        configuration.setAllowedMethods(Arrays.asList(
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With",
+                "Accept",
+                "Origin",
+                "Access-Control-Request-Method",
+                "Access-Control-Request-Headers"));
+        configuration.setExposedHeaders(Arrays.asList(
+                "Access-Control-Allow-Origin",
+                "Access-Control-Allow-Credentials"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-}
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }
