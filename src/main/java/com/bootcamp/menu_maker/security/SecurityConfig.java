@@ -88,8 +88,8 @@ CorsConfigurationSource corsConfigurationSource() {
     configuration.setAllowedOrigins(Arrays.asList(
         "http://localhost:3000",             // Frontend en local
         "http://127.0.0.1:3000", 
-        ("https://victor522m.github.io"),            // Variación local
-        "https://menumaker-production-b6ac.up.railway.app" // Frontend en producción
+        "https://victor522m.github.io",             // Frontend en producción
+        "https://menumaker-production-b6ac.up.railway.app" // Frontend en producción en caso de alojarlo en railway
     ));
     configuration.setAllowedMethods(Arrays.asList(
         "GET", "POST", "PUT", "DELETE", "OPTIONS"
