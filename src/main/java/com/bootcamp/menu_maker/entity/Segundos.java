@@ -5,7 +5,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("SEGUNDO")
+@DiscriminatorValue("SEGUNDOS")
 public class Segundos extends PlatoBase {
 
     private String tipoCarne;
@@ -20,6 +20,6 @@ public class Segundos extends PlatoBase {
     public void setGuarnicion(String guarnicion) { this.guarnicion = guarnicion; }
     @Override
     public String getTipoPlato() {
-        return "SEGUNDO";
+        return "SEGUNDOS";
     }
 }

@@ -3,9 +3,14 @@ package com.bootcamp.menu_maker.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.bootcamp.menu_maker.DTO.PlatoUpdateDTO;
 import com.bootcamp.menu_maker.entity.PlatoBase;
+import com.bootcamp.menu_maker.entity.Postre;
+import com.bootcamp.menu_maker.entity.Primeros;
+import com.bootcamp.menu_maker.entity.Segundos;
 import com.bootcamp.menu_maker.service.PlatoService;
 
 import java.util.List;
@@ -47,7 +52,28 @@ public class PlatoController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PutMapping("/{id}")
+public ResponseEntity<PlatoBase> actualizarPlato(
+    @PathVariable Long id,
+    @Validated @RequestBody PlatoUpdateDTO dto) {
+    
+    // Mapear DTO a entidad
+    PlatoBase platoActualizado = crearInstanciaPorTipo(dto.tipoPlato());
+    platoActualizado.setNombre(dto.nombre());
+    platoActualizado.setPrecio(dto.precio());
+    platoActualizado.setDescripcion(dto.descripcion());
+    
+    return ResponseEntity.ok(platoService.actualizarPlato(id, platoActualizado));
+}
 
+private PlatoBase crearInstanciaPorTipo(String tipo) {
+    return switch(tipo) {
+        case "PRIMEROS" -> new Primeros();
+        case "SEGUNDOS" -> new Segundos();
+        case "POSTRE" -> new Postre();
+        default -> throw new IllegalArgumentException("Tipo inválido: " + tipo);
+    };
+}
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarPlato(@PathVariable Long id) {
         platoService.eliminarPlato(id);
