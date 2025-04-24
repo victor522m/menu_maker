@@ -14,14 +14,14 @@ import java.util.List;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "tipo_plato"
+    property = "dtype" // Cambiado a "dtype" para sincronizar con la base de datos
 )
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Postre.class, name = "POSTRE"),
     @JsonSubTypes.Type(value = Primeros.class, name = "PRIMEROS"),
     @JsonSubTypes.Type(value = Segundos.class, name = "SEGUNDOS")
 })
-public class PlatoBase {
+public abstract class PlatoBase { // Clase ahora abstracta
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +33,7 @@ public class PlatoBase {
 
     // Relación bidireccional con Menu
     @ManyToMany(mappedBy = "platos")
-    @JsonIgnore//evita la serialicacion???
-    //@JsonBackReference // Esto previene la serialización circular
+    @JsonIgnore
     private List<Menu> menus = new ArrayList<>();
 
     // Getters y setters
@@ -49,6 +48,6 @@ public class PlatoBase {
     public List<Menu> getMenus() { return menus; }
     public void setMenus(List<Menu> menus) { this.menus = menus; }
 
-    // Puedes definir un comportamiento diferente según el tipo de plato si es necesario.
-    public String getTipoPlato() { return "No especificado"; }
+    // Método abstracto para obligar a las subclases a implementar
+    public abstract String getTipoPlato();
 }
