@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import com.bootcamp.menu_maker.entity.Menu;
 import com.bootcamp.menu_maker.entity.PlatoBase;
+import com.bootcamp.menu_maker.entity.Postre;
+import com.bootcamp.menu_maker.entity.Primeros;
+import com.bootcamp.menu_maker.entity.Segundos;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
@@ -16,11 +19,11 @@ class MenuTest {
     @BeforeEach
     void setUp() {
         menu = new Menu();
-        PlatoBase plato1 = new PlatoBase();
+        PlatoBase plato1 = new Postre();
         plato1.setPrecio(10.00); // Precio del plato 1
-        PlatoBase plato2 = new PlatoBase();
+        PlatoBase plato2 = new Primeros();
         plato2.setPrecio(15.50); // Precio del plato 2
-        PlatoBase plato3 = new PlatoBase();
+        PlatoBase plato3 = new Segundos();
         plato3.setPrecio(9.30); // Precio del plato 3
 
         menu.setPlatos(List.of(plato1, plato2, plato3));
